@@ -1,7 +1,6 @@
 from typing import Union
 
 import numpy as np
-import errno, sys
 from scipy.stats import rankdata
 
 from gamma_correlation.distances import d_max
@@ -27,34 +26,25 @@ def R(data, x, y, column, d):
         return d(data, x, y, column)
 
 
-def weighter(x, modus):
-    """Weight function that assigns a weight to each rank.
+def weighter_arr(mode, len_):
+    def tmp(start, end):
+        return np.linspace(start, end, len_ + 1)[1:-1]
 
-    :param data: Ranking data
-    :param i: Rank index
-    :param column: Column index
-    :param modus: Weighing that is applied, should be on of {"top bottom", "top", "bottom", "middle", "top bottom exp"}
-    :return: Weight corresponding to the rank at index i
-    """
-    if x == 1:
-        return None
+    match mode:
+        case "top":
+            w = tmp(1, 0)
+        case "bottom":
+            w = tmp(0, 1)
+        case "top bottom":
+            w = np.abs(tmp(1, -1))
+        case "middle":
+            w = 1 - np.abs(tmp(1, -1))
+        case 'top bottom exp':
+            w = 4 * (tmp(0, 1) - 0.5) ** 2
+        case _:
+            raise AttributeError(f'mode "{mode}" not defined')
 
-    if modus == 'top bottom':
-        if x <= 0.5:
-            return 1 - 2 * x
-        return 2 * x - 1
-    elif modus == 'top':
-        return 1 - x
-    elif modus == 'bottom':
-        return x
-    elif modus == 'middle':
-        if x <= 0.5:
-            return 2 * x
-        return 2 - 2 * x
-    elif modus == 'top bottom exp':
-        return 4 * (x - 0.5) ** 2
-    else:
-        print('No mode for weighting has been set!')
+    return np.append(w, np.nan)
 
 
 def data_prep(ranking_a, ranking_b, weights):
@@ -72,23 +62,14 @@ def data_prep(ranking_a, ranking_b, weights):
     sort_indices = np.argsort(both_rankings[:, 0])
     data1 = both_rankings[sort_indices]
 
-    sort_indices2 = np.argsort(both_rankings[:, 1])
-    data2 = both_rankings[sort_indices2]
-
     # Auswahl zwischen eigener Gewichtung, oder einer vordefinierten Gewichtung
     if isinstance(weights, str):
-        weight1 = np.ones(length)
-        weight2 = np.ones(length)
-        if weights != "uniform":
-            weight1 = np.array([weighter(data1[i, 0] / length, weights) for i in range(length)])
-            weight2 = np.array([weighter(data2[i, 1] / length, weights) for i in range(length)])
-        return np.column_stack((data1, weight1, weight2))
+        weight = weighter_arr(weights, length) if weights != "uniform" else np.ones(length)
+        return np.column_stack((data1, weight))
     elif len(weights) == (length - 1):
-        weights = np.append(weights, np.nan)
-        return np.column_stack((data1, weights, weights))
+        return np.column_stack((data1, np.append(weights, np.nan)))
     elif len(weights) and len(weights) != (length - 1):
-        print('Length of weight vector is not n-1!')
-        sys.exit(errno.EACCES)
+        raise AttributeError('Length of weight vector is not n-1!')
 
 
 def scaled_gamma(ranking_a, ranking_b, weights: Union[np.ndarray, str] = 'uniform', tnorm=product, d=d_max):

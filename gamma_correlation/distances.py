@@ -9,7 +9,7 @@ def d_max(data, i, j, column):
     """
     return max(data[int(min(data[i, column], data[j, column])) - 1:
                     int(max(data[i, column], data[j, column])) - 1,
-               column + 2])
+               -1])
 
 
 def d_sum(data, i, j, column):
@@ -24,4 +24,4 @@ def d_sum(data, i, j, column):
     return min(1,
                sum(data[int(min(data[i, column], data[j, column])) - 1:
                         int(max(data[i, column], data[j, column])) - 1,
-                   column + 2]))
+                   -1]))
