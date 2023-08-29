@@ -27,20 +27,20 @@ def R(data, x, y, column, d):
 
 
 def weighter_arr(mode, len_):
-    def tmp(start, end):
+    def cropped_linspace(start, end):
         return np.linspace(start, end, len_ + 1)[1:-1]
 
     match mode:
         case "top":
-            w = tmp(1, 0)
+            w = cropped_linspace(1, 0)
         case "bottom":
-            w = tmp(0, 1)
+            w = cropped_linspace(0, 1)
         case "top bottom":
-            w = np.abs(tmp(1, -1))
+            w = np.abs(cropped_linspace(1, -1))
         case "middle":
-            w = 1 - np.abs(tmp(1, -1))
+            w = 1 - np.abs(cropped_linspace(1, -1))
         case 'top bottom exp':
-            w = 4 * (tmp(0, 1) - 0.5) ** 2
+            w = 4 * (cropped_linspace(0, 1) - 0.5) ** 2
         case _:
             raise AttributeError(f'mode "{mode}" not defined')
 
