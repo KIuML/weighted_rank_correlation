@@ -64,7 +64,7 @@ def data_prep(ranking_a, ranking_b, weights):
 
     # Auswahl zwischen eigener Gewichtung, oder einer vordefinierten Gewichtung
     if isinstance(weights, str):
-        weight = weights(weights, length) if weights != "uniform" else np.ones(length)
+        weight = gen_weights(weights, length) if weights != "uniform" else np.ones(length)
         return np.column_stack((data1, weight))
     elif len(weights) == (length - 1):
         return np.column_stack((data1, np.append(weights, np.nan)))
