@@ -38,47 +38,42 @@ def weighter(x, modus):
     """
     if x == 1:
         return None
+
     if modus == 'top bottom':
         if x <= 0.5:
             return 1 - 2 * x
-        elif 1 > x > 0.5:
-            return 2 * x - 1
+        return 2 * x - 1
     elif modus == 'top':
-        if x < 1:
-            return 1 - x
+        return 1 - x
     elif modus == 'bottom':
-        if x < 1:
-            return x
+        return x
     elif modus == 'middle':
         if x <= 0.5:
             return 2 * x
-        elif 1 > x > 0.5:
-            return 2 - 2 * x
+        return 2 - 2 * x
     elif modus == 'top bottom exp':
-        if x < 1:
-            return 4 * (x - 0.5) ** 2
+        return 4 * (x - 0.5) ** 2
     else:
         print('No mode for weighting has been set!')
 
 
-def data_prep(x, y, weights):
+def data_prep(ranking_a, ranking_b, weights):
     """
     Prepares data for rank correlation computation
 
-    :param x: _description_
-    :param y: _description_
+    :param ranking_a: _description_
+    :param ranking_b: _description_
     :param weights: _description_
     :return: _description_
     """
-    length = len(x)
+    length = len(ranking_a)
 
-    data1 = np.column_stack((rankdata(x), rankdata(y)))
-    sort_indices = np.argsort(data1[:, 0])
-    data1 = data1[sort_indices]
+    both_rankings = np.column_stack((rankdata(ranking_a), rankdata(ranking_b)))
+    sort_indices = np.argsort(both_rankings[:, 0])
+    data1 = both_rankings[sort_indices]
 
-    data2 = np.column_stack((rankdata(x), rankdata(y)))
-    sort_indices2 = np.argsort(data2[:, 1])
-    data2 = data2[sort_indices2]
+    sort_indices2 = np.argsort(both_rankings[:, 1])
+    data2 = both_rankings[sort_indices2]
 
     # Auswahl zwischen eigener Gewichtung, oder einer vordefinierten Gewichtung
     if isinstance(weights, str):
