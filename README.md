@@ -13,13 +13,12 @@ To perform a calculation run the function ```scaled_gamma(x,y)``` with x and y b
 
 Consider the following minimal example for usage:
 
-```
-from scaled_gamma import scaled_gamma
-
+```python
+from gamma_correlation import scaled_gamma
 
 if __name__ == "__main__":
-     ranking_a = [1,2,3,4,5]
-     ranking_b = [5,4,3,2,1]
+    ranking_a = [1, 2, 3, 4, 5]
+    ranking_b = [5, 4, 3, 2, 1]
 
-     print(scaled_gamma(ranking_a,ranking_b))
+    print(scaled_gamma(ranking_a, ranking_b))
 ```
