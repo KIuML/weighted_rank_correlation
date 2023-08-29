@@ -194,7 +194,7 @@ def data_prep(x, y, weights, weighting):
         sys.exit(errno.EACCES)
 
 
-def scaled_gamma(data1, data2, weighting='uniform', tnorm='product', distance='max', weights=None):
+def scaled_gamma(data1, data2, weighting='uniform', tnorm='product', distance='max', weights:np.ndarray=None):
     """Calculates the scaled gamma rank correlation coefficient as proposed by Henzgen and Hüllereier [1]
 
     [1] Henzgen, Sascha; Hüllermeier, Eyke  (2015): Weighted Rank Correlation: A Flexible Approach Based on Fuzzy Order Relations.
