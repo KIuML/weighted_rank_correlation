@@ -26,7 +26,7 @@ def R(data, x, y, column, d):
         return d(data, x, y, column)
 
 
-def weighter_arr(mode, len_):
+def gen_weights(mode, len_):
     def cropped_linspace(start, end):
         return np.linspace(start, end, len_ + 1)[1:-1]
 
@@ -64,7 +64,7 @@ def data_prep(ranking_a, ranking_b, weights):
 
     # Auswahl zwischen eigener Gewichtung, oder einer vordefinierten Gewichtung
     if isinstance(weights, str):
-        weight = weighter_arr(weights, length) if weights != "uniform" else np.ones(length)
+        weight = weights(weights, length) if weights != "uniform" else np.ones(length)
         return np.column_stack((data1, weight))
     elif len(weights) == (length - 1):
         return np.column_stack((data1, np.append(weights, np.nan)))
@@ -105,10 +105,10 @@ def scaled_gamma(ranking_a, ranking_b, weights: Union[np.ndarray, str] = 'unifor
                 con += t_norm(R(data, z, i, 0, d), R(data, z, i, 1, d))
                 dis += t_norm(R(data, i, z, 0, d), R(data, z, i, 1, d))
                 dis += t_norm(R(data, z, i, 0, d), R(data, i, z, 1, d))
-    if (con == 0) and (dis == 0):
-        return np.nan
-    else:
+    if con or dis:
         return (con - dis) / (con + dis)
+    else:
+        return np.nan
 
 
 if __name__ == '__main__':
