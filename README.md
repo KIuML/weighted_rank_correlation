@@ -1,4 +1,4 @@
-# weighted_rank_correlation
+# Weighted Rank Correlation
 An implementation of Henzgens and Hüllemeiers weighted rank correlation coefficient scaled gamma, provided by Hoang Cong Thanh @Marmalada1. 
 
 
@@ -8,7 +8,7 @@ To install the dependencies you can use the associated requirements.txt file:
 pip install requirements.txt
 ```
 
-To perform a calculation run the function ```scaled_gamma(x,y)``` with x and y being the two list to compare.
+To perform a calculation run the function ```gamma_corr(x,y)``` with x and y being the two list to compare.
 
 Consider the following minimal example for usage:
 
