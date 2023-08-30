@@ -8,7 +8,7 @@ packages = [{include = "weighted_rank_correlation"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
-numpy = "scipy"
+numpy = "^1.25.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
