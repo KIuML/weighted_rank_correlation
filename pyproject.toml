@@ -1,10 +1,10 @@
 [tool.poetry]
 name = "weighted-rank-correlation"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["Stefan Heid <stefan.heid@upb.de>", "Jonas Hanselle <jonas.hanselle@ifi.lmu.de>"]
 readme = "README.md"
-packages = [{include = "weighted_rank_correlation"}]
+packages = [{ include = "gamma_correlation" }]
 
 [tool.poetry.dependencies]
 python = "^3.11"
