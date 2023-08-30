@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Henzgen"
+  given-names: "Sascha"
+- family-names: "Hüllermeier"
+  given-names: "Eyke"
+  orcid: "https://orcid.org/0000-0002-9944-4108"
+title: "Weighting by Tying: A New Approach to Weighted Rank Correlation"
+url: "https://arxiv.org/abs/2308.10622"
