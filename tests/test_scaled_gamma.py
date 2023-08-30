@@ -2,7 +2,7 @@ import numpy as np
 from pytest import approx
 import pytest
 
-from gamma_correlation import scaled_gamma
+from gamma_correlation import scaled_gamma, d_sum, d_max
 
 
 @pytest.fixture(autouse=True)
@@ -44,13 +44,24 @@ def test_2():
 
 @pytest.mark.parametrize("func,expected",
                          [("top", -0.5483870967),
-                          ("bottom", -0.5483870967),
-                          ("top bottom", -0.54838709677),
-                          ("middle", -0.5483870967),
-                          ("top bottom exp", -0.5483870967)])
+                          ("bottom", -0.25),
+                          ("top bottom", -0.5),
+                          ("middle", -0.25),
+                          ("top bottom exp", -0.5)])
 def test_weights(func, expected):
     a = np.arange(1, 5)
     ranking_a = np.random.permutation(a)
     ranking_b = np.random.permutation(a)
 
-    assert approx(scaled_gamma(ranking_a, ranking_b, weights="top")) == expected
+    assert approx(scaled_gamma(ranking_a, ranking_b, weights=func)) == expected
+
+
+@pytest.mark.parametrize("func,expected",
+                         [(d_sum, -0.5555555555555556),
+                          (d_max, -0.5483870967741935)])
+def test_dists(func, expected):
+    a = np.arange(1, 5)
+    ranking_a = np.random.permutation(a)
+    ranking_b = np.random.permutation(a)
+
+    assert approx(scaled_gamma(ranking_a, ranking_b, weights="top", d=func)) == expected

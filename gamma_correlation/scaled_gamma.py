@@ -23,7 +23,7 @@ def R(data, x, y, column, d):
     if data[x, column] >= data[y, column]:
         return 0
     else:
-        return d(data, x, y, column)
+        return d(data[[x, y], column], data[:, -1])
 
 
 def gen_weights(mode, len_):
@@ -100,7 +100,8 @@ def scaled_gamma(ranking_a, ranking_b, weights: Union[np.ndarray, str] = 'unifor
             if (data[i, 0] == data[z, 0]) or (data[i, 1] == data[z, 1]):
                 ties += 1
             else:
-                ties += t_conorm(1 - d(data, i, z, 0), 1 - d(data, i, z, 1))
+
+                ties += t_conorm(1 - d(data[[i, z], 0], data[:, -1]), 1 - d(data[[i, z], 1], data[:, -1]))
                 con += t_norm(R(data, i, z, 0, d), R(data, i, z, 1, d))
                 con += t_norm(R(data, z, i, 0, d), R(data, z, i, 1, d))
                 dis += t_norm(R(data, i, z, 0, d), R(data, z, i, 1, d))

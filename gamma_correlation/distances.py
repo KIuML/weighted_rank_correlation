@@ -1,4 +1,7 @@
-def d_max(data, i, j, column):
+import numpy as np
+
+
+def d_max(pair: np.ndarray, weights: np.ndarray):
     """Pseudo-metric according to eq (11) in the paper
 
     :param data: Rank data
@@ -7,12 +10,11 @@ def d_max(data, i, j, column):
     :param column: column index
     :return: Value of pseudo-metric as a global distance funcion
     """
-    return max(data[int(min(data[i, column], data[j, column])) - 1:
-                    int(max(data[i, column], data[j, column])) - 1,
-               -1])
+    low_idx, high_idx = sorted(pair.astype(int) - 1)
+    return weights[low_idx:high_idx].max()
 
 
-def d_sum(data, i, j, column):
+def d_sum(pair: np.ndarray, weights: np.ndarray):
     """Pseudo-metric according to eq (12) in the paper
 
     :param data: Rank data
@@ -21,7 +23,5 @@ def d_sum(data, i, j, column):
     :param column: Column index
     :return: Value of pseudo-metric as a global distance funcion on
     """
-    return min(1,
-               sum(data[int(min(data[i, column], data[j, column])) - 1:
-                        int(max(data[i, column], data[j, column])) - 1,
-                   -1]))
+    low_idx, high_idx = sorted(pair.astype(int) - 1)
+    return min(1, weights[low_idx:high_idx].sum())
