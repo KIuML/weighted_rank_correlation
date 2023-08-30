@@ -1,14 +1,17 @@
 # Weighted Rank Correlation
 An implementation of Henzgens and Hüllemeiers weighted rank correlation coefficient scaled gamma, provided by Hoang Cong Thanh @Marmalada1. 
 
+## Installation
 
-To install the dependencies you can use the associated requirements.txt file:
+The project can be installed with `poetry`
 
+```bash
+poetry add git+https://github.com/KIuML/weighted_rank_correlation.git
 ```
-pip install requirements.txt
-```
 
-To perform a calculation run the function ```gamma_corr(x,y)``` with x and y being the two list to compare.
+## Usage
+
+To perform a calculation run the function ```gamma_corr(x,y)``` with x and y being the two rankings to compare.
 
 Consider the following minimal example for usage:
 
