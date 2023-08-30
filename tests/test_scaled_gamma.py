@@ -2,7 +2,7 @@ import numpy as np
 from pytest import approx
 import pytest
 
-from gamma_correlation import gamma_corr, d_sum, d_max
+from gamma_correlation import gamma_corr, d_sum, d_max, gen_weights
 
 
 @pytest.fixture(autouse=True)
@@ -42,26 +42,28 @@ def test_2():
     assert approx(gamma_corr(ranking_a, ranking_b, weights=np.linspace(1, .25, 4))) == -0.10112359550561797
 
 
-@pytest.mark.parametrize("func,expected",
+@pytest.mark.parametrize("mode,expected",
                          [("top", -0.5483870967),
                           ("bottom", -0.25),
                           ("top bottom", -0.5),
                           ("middle", -0.25),
                           ("top bottom exp", -0.5)])
-def test_weights(func, expected):
-    a = np.arange(1, 5)
+def test_weights(mode, expected):
+    n = 4
+    a = np.arange(n) + 1
     ranking_a = np.random.permutation(a)
     ranking_b = np.random.permutation(a)
 
-    assert approx(gamma_corr(ranking_a, ranking_b, weights=func)) == expected
+    assert approx(gamma_corr(ranking_a, ranking_b, weights=gen_weights(mode, n))) == expected
 
 
 @pytest.mark.parametrize("func,expected",
                          [(d_sum, -0.5555555555555556),
                           (d_max, -0.5483870967741935)])
 def test_dists(func, expected):
-    a = np.arange(1, 5)
+    n = 4
+    a = np.arange(n) + 1
     ranking_a = np.random.permutation(a)
     ranking_b = np.random.permutation(a)
 
-    assert approx(gamma_corr(ranking_a, ranking_b, weights="top", d=func)) == expected
+    assert approx(gamma_corr(ranking_a, ranking_b, weights=gen_weights("top", n), d=func)) == expected
