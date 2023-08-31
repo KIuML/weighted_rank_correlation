@@ -29,6 +29,8 @@ def gamma_corr(ranking_a: Union[list, np.ndarray], ranking_b: Union[list, np.nda
 
     if weights is None:
         weights = np.ones(n - 1)
+    elif isinstance(weights, str):
+        weights = gen_weights(weights, n)
 
     con = dis = 0
     for i, j in combinations(range(n), 2):
