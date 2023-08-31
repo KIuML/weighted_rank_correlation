@@ -24,3 +24,17 @@ w = gen_weights("top", len(ranking_a))
 
 print(gamma_corr(ranking_a, ranking_b, weights=w))
 ```
+
+This example computes the gamma correlation coefficient for the predifined _top_ weighting function, that emphasizes changes in the upper part of the rankings. 
+
+Custom weighting functions can be defined in terms of a vector of length _n - 1_. The weight at position _i_ describes the degree to which rank position _i_ and _i + 1_ are distinguished from each other. For example, a linearly inreasing weighting (i.e. emphasizing changes at the bottom of the rankings) can be implemented as follows:
+
+```python
+from gamma_correlation import gen_weights, gamma_corr
+
+ranking_a = [1, 2, 3, 4, 5]
+ranking_b = [3, 2, 5, 4, 1]
+w = np.linspace(1, .25, 4)
+
+print(gamma_corr(ranking_a, ranking_b, weights=w))
+```
