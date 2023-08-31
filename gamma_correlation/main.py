@@ -7,10 +7,22 @@ from gamma_correlation.util import gen_weights
 from gamma_correlation.distances import d_max, R
 from gamma_correlation.tnorms import prod
 
+from scipy.stats import rankdata
+
 
 def gamma_corr(ranking_a: Union[list, np.ndarray], ranking_b: Union[list, np.ndarray], *,
                weights: np.ndarray = None, tnorm=prod, d=d_max):
-    ranking_a, ranking_b = np.array(ranking_a), np.array(ranking_b)
+    """
+    Computes the scaled gamma rank correlation.
+
+    :param ranking_a: _description_
+    :param ranking_b: _description_
+    :param weights: _description_, defaults to None
+    :param tnorm: _description_, defaults to prod
+    :param d: _description_, defaults to d_max
+    :return: _description_
+    """
+    ranking_a, ranking_b = rankdata(np.array([ranking_a, ranking_b]), method="dense", axis=1)
     n = len(ranking_a)
 
     if weights is None:

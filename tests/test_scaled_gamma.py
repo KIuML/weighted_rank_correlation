@@ -67,3 +67,29 @@ def test_dists(func, expected):
     ranking_b = np.random.permutation(a)
 
     assert approx(gamma_corr(ranking_a, ranking_b, weights=gen_weights("top", n), d=func)) == expected
+
+
+def test_zero_indexed():
+    n = 4
+    a = np.arange(n)
+    ranking_a = np.random.permutation(a)
+    ranking_b = np.random.permutation(a)
+
+    assert approx(gamma_corr(ranking_a, ranking_b)) == -0.3333333333333333
+
+
+def test_float():
+    n = 4
+    a = np.arange(n).astype("float")
+    ranking_a = np.random.permutation(a)
+    ranking_b = np.random.permutation(a)
+
+    assert approx(gamma_corr(ranking_a, ranking_b)) == -0.3333333333333333
+
+
+@pytest.mark.parametrize("ranking_a, ranking_b, expected",
+                         [([1,1,2,3], [1,2,2,3], 1.0)])
+def test_ties(ranking_a, ranking_b, expected):
+
+    assert approx(gamma_corr(ranking_a, ranking_b)) == expected
+
