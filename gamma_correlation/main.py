@@ -22,6 +22,8 @@ def gamma_corr(ranking_a: Union[list, np.ndarray], ranking_b: Union[list, np.nda
     :param d: _description_, defaults to d_max
     :return: _description_
     """
+    if set(ranking_a) != set(ranking_b):
+        raise AttributeError(f"Ranking a {ranking_a} and ranking b {ranking_b} contain different ranks!")
     ranking_a, ranking_b = rankdata(np.array([ranking_a, ranking_b]), method="dense", axis=1)
     n = len(ranking_a)
 

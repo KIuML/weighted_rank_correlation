@@ -93,3 +93,7 @@ def test_ties(ranking_a, ranking_b, expected):
 
     assert approx(gamma_corr(ranking_a, ranking_b)) == expected
 
+def test_disjoint_ranking():
+
+    with pytest.raises(AttributeError):
+        gamma_corr([1.5,3.445,4.3], [3,4,1])
