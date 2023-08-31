@@ -67,3 +67,7 @@ def test_dists(func, expected):
     ranking_b = np.random.permutation(a)
 
     assert approx(gamma_corr(ranking_a, ranking_b, weights=gen_weights("top", n), d=func)) == expected
+
+# TODO test case rankings that start with 0
+# TODO test case rankings that include floating point numbers
+# TODO test case rankings that include ties
