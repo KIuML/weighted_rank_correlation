@@ -1,5 +1,5 @@
 # Weighted Rank Correlation
-An implementation of Henzgens and Hüllemeiers weighted rank correlation coefficient scaled gamma, provided by Hoang Cong Thanh @Marmalada1. 
+An implementation of Henzgens and Hüllermeiers weighted rank correlation coefficient scaled gamma, provided by Hoang Cong Thanh @Marmalada1. 
 
 ## Installation
 
