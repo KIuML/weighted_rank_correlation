@@ -2,7 +2,7 @@ import numpy as np
 from pytest import approx
 import pytest
 
-from gamma_correlation import gamma_corr, d_sum, d_max, gen_weights
+from gamma_correlation import gamma_corr, agg_clamped_sum, agg_max, gen_weights
 
 
 @pytest.fixture(autouse=True)
@@ -58,12 +58,12 @@ def test_weights(mode, expected):
 
 
 @pytest.mark.parametrize("func,expected",
-                         [(d_sum, -0.5555555555555556),
-                          (d_max, -0.5483870967741935)])
+                         [(agg_clamped_sum, -0.5555555555555556),
+                          (agg_max, -0.5483870967741935)])
 def test_dists(func, expected):
     n = 4
     a = np.arange(n) + 1
     ranking_a = np.random.permutation(a)
     ranking_b = np.random.permutation(a)
 
-    assert approx(gamma_corr(ranking_a, ranking_b, weights=gen_weights("top", n), d=func)) == expected
+    assert approx(gamma_corr(ranking_a, ranking_b, weights=gen_weights("top", n), weight_agg=func)) == expected
