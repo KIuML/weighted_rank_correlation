@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def prod(a, b):
     return a * b
 
@@ -10,4 +13,4 @@ def luka(a, b):
     :param b:
     :return:
     """
-    return max(a + b - 1, 0)
+    return np.max(a + b - 1, 0)
