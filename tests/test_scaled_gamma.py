@@ -2,12 +2,12 @@ import numpy as np
 from pytest import approx
 import pytest
 
-from gamma_correlation import gamma_corr, agg_clamped_sum, agg_max, gen_weights
+from gamma_correlation import gamma_corr, gen_weights, weight_agg_max, weight_agg_clamped_sum
 
 
 @pytest.fixture(autouse=True)
 def set_random_seed():
-    # seeds any random state in the tests, regardless where is is defined
+    # seeds any random state in the tests, regardless where is defined
     np.random.seed(0)
 
 
@@ -58,8 +58,8 @@ def test_weights(mode, expected):
 
 
 @pytest.mark.parametrize("func,expected",
-                         [(agg_clamped_sum, -0.5555555555555556),
-                          (agg_max, -0.5483870967741935)])
+                         [(weight_agg_clamped_sum, -0.5555555555555556),
+                          (weight_agg_max, -0.5483870967741935)])
 def test_dists(func, expected):
     n = 4
     a = np.arange(n) + 1
