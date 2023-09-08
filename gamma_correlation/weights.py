@@ -6,6 +6,8 @@ def gen_weights(mode, len_):
         return np.linspace(start, end, len_ + 1)[1:-1]
 
     match mode:
+        case "uniform":
+            return np.ones(len_ - 1)
         case "top":
             return cropped_linspace(1, 0)
         case "bottom":
