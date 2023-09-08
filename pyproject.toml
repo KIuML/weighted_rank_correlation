@@ -1,14 +1,15 @@
 [tool.poetry]
 name = "weighted-rank-correlation"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["Stefan Heid <stefan.heid@upb.de>", "Jonas Hanselle <jonas.hanselle@ifi.lmu.de>"]
 readme = "README.md"
 packages = [{ include = "gamma_correlation" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.11,<3.13"
 numpy = "^1.25.2"
+scipy = "^1.11.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
