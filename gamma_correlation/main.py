@@ -17,10 +17,9 @@ def gamma_corr(ranking_a: Union[list, np.ndarray], ranking_b: Union[list, np.nda
 
     if weights is None:
         weights = "uniform"
-    # noinspection PyTypeChecker
     if isinstance(weights, str):
-        weight_vec = gen_weights(weights, ranklength - 1)
-    elif isinstance(weights, np.array):
+        weight_vec = gen_weights(weights, ranklength)
+    elif isinstance(weights, np.ndarray):
         weight_vec = weights  # type:np.array
 
     def calculate_pairwise_comparisons(ranking: np.array) -> np.array:
