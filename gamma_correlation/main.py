@@ -1,4 +1,3 @@
-from operator import xor
 from typing import Union, Optional
 
 import numpy as np
@@ -22,31 +21,39 @@ def gamma_corr(ranking_a: Union[list, np.ndarray], ranking_b: Union[list, np.nda
     elif isinstance(weights, np.ndarray):
         weight_vec = weights  # type:np.array
 
+    def w_aggregator(idx):
+        return weight_agg(weight_vec[slice(*(idx - 1))])
+
     def calculate_pairwise_comparisons(ranking: np.array) -> np.array:
         """
-        :param ranking: 1 × n array of an ordering
-        :return: 2 × (n over 2) pairwise weight aggregations.
+        :param ranking: 1 × ranklength array of an ordering
+        :return: 2 × (ranklength over 2) pairwise weight aggregations.
         """
         # upper triangle matrix to calculate all pairwise comparisons
-        pair_indices = np.array(np.triu_indices(ranklength, 1))
+        triu = np.triu_indices(ranklength, 1)
+        pair_indices = np.array(triu)
         # calculate pairwise rank positions
         rank_positions = ranking[pair_indices]
+
         # calculate weight slices and aggregate, return aij and aji
-        agg_weights = np.vstack((
-            np.apply_along_axis(lambda idx: weight_agg(weight_vec[slice(*(idx - 1))]), 0, rank_positions),
-            np.apply_along_axis(lambda idx: weight_agg(weight_vec[slice(*(idx - 1))]), 0, np.flipud(rank_positions))
-        ))
+        # reshape the pairs back into a matrix
+        agg_weights_matrix = np.zeros([ranklength, ranklength])
+        # first we fill lower triangle with the inverse rank positions
+        agg_weights_matrix[triu] = np.apply_along_axis(w_aggregator, 0, np.flipud(rank_positions))
+        agg_weights_matrix = agg_weights_matrix.T
+        # after transposing we fill the top triangle
+        agg_weights_matrix[triu] = np.apply_along_axis(w_aggregator, 0, rank_positions)
 
-        return agg_weights  # 2 × (ranklength over 2)
+        return agg_weights_matrix  # ranklength × ranklength
 
-    # calculate all pairwise comparisons for all orderings
-    pairs_a, pairs_b = np.apply_along_axis(calculate_pairwise_comparisons, 1, rankings)  # 2 × 2 × (ranklength over 2)
+    # calculate all pairwise comparisons for all rankings. This considers the weights
+    pairs_a, pairs_b = np.apply_along_axis(calculate_pairwise_comparisons, 1, rankings)  # ranklength × ranklength
 
-    correlations = [((-1) ** xor(x, y)) * tnorm(pairs_a[x], pairs_b[y]) for x, y in [[0, 0], [0, 1], [1, 0], [1, 1]]]
-    corr = np.array(correlations)
+    con = tnorm(pairs_a, pairs_b).sum()
+    dis = tnorm(pairs_a, pairs_b.T).sum()
 
     try:
-        return corr.sum() / np.abs(corr).sum()
+        return (con - dis) / (con + dis)
     except ZeroDivisionError:
         return np.nan
 
