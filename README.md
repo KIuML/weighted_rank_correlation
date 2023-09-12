@@ -20,9 +20,8 @@ from gamma_correlation import gen_weights, gamma_corr
 
 ranking_a = [1, 2, 3, 4, 5]
 ranking_b = [5, 4, 3, 2, 1]
-w = gen_weights("top", len(ranking_a))
 
-print(gamma_corr(ranking_a, ranking_b, weights=w))
+print(gamma_corr(ranking_a, ranking_b, weights="top"))
 ```
 
 This example computes the gamma correlation coefficient for the predifined _top_ weighting function, that emphasizes changes in the upper part of the rankings. 
