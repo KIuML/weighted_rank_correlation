@@ -1,3 +1,5 @@
+[![Publication](https://img.shields.io/badge/doi-10.1007%2F978--3--319--23525--7__26-blue)](https://doi.org/10.1007/978-3-319-23525-7_26)
+
 # Weighted Rank Correlation
 An implementation of Henzgens and Hüllermeiers weighted rank correlation coefficient scaled gamma, provided by Hoang Cong Thanh @Marmalada1. 
 
